@@ -17,7 +17,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'openstack-neutron-vpnaas',
             'python-networking-generic-switch',
         ] %}
-        {% elseif %}
+        {% endif %}
 
     {% elif base_distro in ['debian', 'ubuntu'] %}
 
