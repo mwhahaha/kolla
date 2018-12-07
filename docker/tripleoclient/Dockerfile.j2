@@ -6,19 +6,29 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% import "macros.j2" as macros with context %}
 
 {% if install_type == 'binary' %}
-    {% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+    {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
+        {% set tripleoclient_packages = [
+                'e2fsprogs',
+                'git',
+                'openssh-clients',
+                'openstack-tripleo-validations',
+                'puppet-tripleo',
+                'xfsprogs'
+        ] %}
 
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set tripleoclient_packages = [
+                'python3-ipaddr',
+                'python3-openstackclient',
+                'python3-tripleoclient'
+        ] %}
+        {% else %}
         {% set tripleoclient_packages = [
                 'python-ipaddr',
                 'python-openstackclient',
-                'python-tripleoclient',
-                'puppet-tripleo',
-                'openstack-tripleo-validations',
-                'e2fsprogs',
-                'xfsprogs',
-                'openssh-clients',
-                'git'
+                'python-tripleoclient'
         ] %}
+        {% endif %}
 
 {{ macros.install_packages(tripleoclient_packages | customizable("packages")) }}
 

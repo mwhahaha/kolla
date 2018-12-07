@@ -11,14 +11,12 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
     'collectd'
 ] %}
 
-{% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+{% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
   {% set collectd_packages = collectd_packages + [
-      'collectd-amqp1',
       'collectd-apache',
       'collectd-bind',
       'collectd-ceph',
       'collectd-chrony',
-      'collectd-connectivity',
       'collectd-curl',
       'collectd-curl_json',
       'collectd-curl_xml',
@@ -33,23 +31,38 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
       'collectd-mysql',
       'collectd-netlink',
       'collectd-openldap',
-      'collectd-ovs-events',
-      'collectd-ovs-stats',
       'collectd-ping',
-      'collectd-procevent',
       'collectd-python',
       'collectd-sensors',
       'collectd-smart',
       'collectd-snmp',
-      'collectd-snmp-agent',
-      'collectd-sysevent',
       'collectd-utils',
       'collectd-virt',
       'collectd-write_http',
       'collectd-write_kafka',
-      'collectd-write_prometheus',
+      'collectd-write_prometheus'
+  ] %}
+
+  {% if base_distro_tag in ['28','8'] %}
+  {# TODO(aschultz): there are some missing packages here #}
+  {% set collectd_packages = collectd_packages + [
+      'collectd-amqp',
+      'collectd-ovs_events',
+      'collectd-ovs_stats',
+      'collectd-snmp_agent',
+  ] %}
+  {% else %}
+  {% set collectd_packages = collectd_packages + [
+      'collectd-amqp1',
+      'collectd-connectivity',
+      'collectd-ovs-events',
+      'collectd-ovs-stats',
+      'collectd-procevent',
+      'collectd-snmp-agent',
+      'collectd-sysevent',
       'python-collectd-gnocchi'
   ] %}
+  {% endif %}
 
   {% if base_arch in ['x86_64', 'ppc64le'] %}
       {% set collectd_packages = collectd_packages + [
@@ -58,15 +71,27 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
   {% endif %}
 
   {% if base_arch =='x86_64' %}
+{# NOTE(aschultz): missing packages?
+INFO:kolla.common.utils.collectd:No match for argument: collectd-rdt
+INFO:kolla.common.utils.collectd:No match for argument: collectd-turbostat
+#}
+    {% if base_distro_tag in ['28', '8'] %}
+      {% set collectd_packages = collectd_packages + [
+        'collectd-hugepages',
+      ] %}
+    {% else %}
       {% set collectd_packages = collectd_packages + [
         'collectd-hugepages',
         'collectd-rdt',
         'collectd-turbostat'
       ] %}
+    {% endif %}
 
   {% endif %}
+  {% if base_distro not in ['fedora'] %}
 # make sure, collectd is pulled from centos-opstools
 RUN yum-config-manager --disable epel
+  {% endif %}
 {% endif %}
 
 {{ macros.install_packages(collectd_packages | customizable("packages")) }}

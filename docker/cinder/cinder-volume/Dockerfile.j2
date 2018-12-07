@@ -5,15 +5,24 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% import "macros.j2" as macros with context %}
 
-{% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+{% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
     {% set cinder_volume_packages = [
             'nfs-utils',
             'nvmetcli',
-            'python-rtslib',
             'scsi-target-utils',
             'sysfsutils',
             'targetcli'
     ] %}
+
+    {% if base_distro_tag in ['28', '8'] %}
+    {% set cinder_volume_packages = cinder_volume_packages + [
+            'python3-rtslib',
+    ] %}
+    {% else %}
+    {% set cinder_volume_packages = cinder_volume_packages + [
+            'python-rtslib',
+    ] %}
+    {% endif %}
 {{ macros.install_packages(cinder_volume_packages | customizable("packages")) }}
 
 {% block cinder_volume_redhat_setup %}

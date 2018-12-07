@@ -8,16 +8,23 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {{ macros.configure_user(name='panko') }}
 
 {% if install_type == 'binary' %}
-    {% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
-
-       {% set panko_base_packages = [
+    {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
+        {% set panko_base_packages = [
             'httpd',
             'mod_ssl',
             'mod_wsgi',
             'openstack-panko-common',
-            'python2-ldappool'
         ] %}
 
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set panko_base_packages = panko_base_packages + [
+            'python3-ldappool'
+        ] %}
+        {% else %}
+        {% set panko_base_packages = panko_base_packages + [
+            'python2-ldappool'
+        ] %}
+        {% endif %}
 {{ macros.install_packages(panko_base_packages | customizable("packages")) }}
 RUN sed -i -r 's,^(Listen 80),#\1,' /etc/httpd/conf/httpd.conf \
     && sed -i -r 's,^(Listen 443),#\1,' /etc/httpd/conf.d/ssl.conf

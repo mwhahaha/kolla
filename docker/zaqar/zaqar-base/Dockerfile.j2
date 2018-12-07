@@ -9,14 +9,24 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
 
-    {% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+    {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
         {% set zaqar_base_packages = [
             'openstack-zaqar',
             'httpd',
             'mod_ssl',
             'mod_wsgi',
+        ] %}
+
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set zaqar_base_packages = zaqar_base_packages + [
+            'python3-ldappool'
+        ] %}
+        {% else %}
+        {% set zaqar_base_packages = zaqar_base_packages + [
             'python2-ldappool'
         ] %}
+        {% endif %}
+
 
 {{ macros.install_packages(zaqar_base_packages | customizable("packages")) }} \
     && mkdir -p /var/www/cgi-bin/zaqar \

@@ -6,7 +6,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% import "macros.j2" as macros with context %}
 
 {% if install_type == 'binary' %}
-    {% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+    {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
         # TODO(Jeffrey4l): no python-oneviewclient
         {% set ironic_conductor_packages = [
             'ansible',
@@ -15,9 +15,32 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'gdisk',
             'ipmitool',
             'openstack-ironic-conductor',
-            'openstack-ironic-staging-drivers',
             'parted',
             'psmisc',
+            'shellinabox',
+            'util-linux',
+            'xfsprogs'
+        ] %}
+
+        {% if base_distro_tag in ['28', '8'] %}
+{# TODO(aschultz): missing packages?
+            'openstack-ironic-staging-drivers',
+            'python3-UcsSdk',
+            'python3-ImcSdk',
+#}
+        {% set ironic_conductor_packages = ironic_conductor_packages + [
+            'ansible-python3',
+            'python3-pysnmp',
+            'python3-dracclient',
+            'python3-ironic-inspector-client',
+            'python3-proliantutils',
+            'python3-scciclient',
+            'python3-sushy',
+            'python3-systemd'
+        ] %}
+        {% else %}
+        {% set ironic_conductor_packages = ironic_conductor_packages + [
+            'openstack-ironic-staging-drivers',
             'pysnmp',
             'python2-ImcSdk',
             'python-dracclient',
@@ -26,11 +49,9 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'python-scciclient',
             'python-sushy',
             'python-UcsSdk',
-            'shellinabox',
             'systemd-python',
-            'util-linux',
-            'xfsprogs',
         ] %}
+        {% endif %}
         {% if base_distro in ['centos', 'oraclelinux'] %}
             {% set ironic_conductor_packages = ironic_conductor_packages + [
                 'qemu-img-ev'

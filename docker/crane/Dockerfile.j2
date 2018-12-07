@@ -6,7 +6,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% import "macros.j2" as macros with context %}
 
 {% if install_type == 'binary' %}
-    {% if base_distro in ['centos', 'rhel'] %}
+    {% if base_distro in ['fedora', 'centos', 'rhel'] %}
 
         {% set crane_packages = [
                 'httpd',
