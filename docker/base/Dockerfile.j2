@@ -38,12 +38,17 @@ RUN CURRENT_DISTRO_RELEASE=$(awk '{match($0, /[0-9]+/,version)}END{print version
         echo "Only release '{{ supported_distro_release }}' is supported on {{ base_distro }}"; false; \
     fi \
     && cat /tmp/kolla_bashrc >> /etc/bashrc \
-    && sed -i 's|^\(override_install_langs=.*\)|# \1|' /etc/yum.conf
+    && sed -i 's|^\(override_install_langs=.*\)|# \1|' \
+{% if base_distro_tag in ['28', '8'] %}
+    /etc/dnf/dnf.conf
+{% else %}
+    /etc/yum.conf
+{% endif %}
 
 {% block base_yum_conf %}
 
 {% if base_distro_tag in ['28', '8'] %}
-COPY dnf.conf /etc/dnf.conf
+COPY dnf.conf /etc/dnf/dnf.conf
 {% else %}
 COPY yum.conf /etc/yum.conf
 {% endif %}
