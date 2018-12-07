@@ -14,6 +14,11 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
         {% if base_distro_tag in ['28', '8'] %}
+{# TODO(aschultz): missing packages
+            'python3-networking-sfc',
+            'python3-networking-vmware-nsx',
+            'python3-networking-baremetal',
+#}
         {% set neutron_base_packages = [
             'keepalived',
             'net-tools',
@@ -23,9 +28,6 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'openstack-neutron-lbaas',
             'openstack-neutron-ml2',
             'openvswitch',
-            'python3-networking-sfc',
-            'python3-networking-vmware-nsx',
-            'python3-networking-baremetal',
             'python3-openvswitch',
             'python3-oslo-vmware'
         ] %}
