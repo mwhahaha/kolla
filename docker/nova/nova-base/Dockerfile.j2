@@ -8,7 +8,18 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {{ macros.configure_user(name='nova', groups='qemu') }}
 
 {% if install_type == 'binary' %}
-    {% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+    {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
+        {% if base_distro_tag in ['28', '8'] %}
+
+        {% set nova_base_packages = [
+                'bridge-utils',
+                'openstack-nova-common',
+                'openvswitch',
+                'python3-cinderclient',
+                'python3-keystoneclient'
+        ] %}
+
+        {% else %}
 
         {% set nova_base_packages = [
                 'bridge-utils',
@@ -17,6 +28,8 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
                 'python-cinderclient',
                 'python-keystoneclient'
         ] %}
+
+        {% endif %}
 
         {% if base_arch == 'x86_64' %}
             {% set nova_base_packages = nova_base_packages + [

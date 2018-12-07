@@ -8,8 +8,17 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {{ macros.configure_user(name='aodh') }}
 
 {% if install_type == 'binary' %}
-    {% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+    {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
 
+       {% if base_distro_tag in ['28', '8'] %}
+       {% set aodh_base_packages = [
+            'httpd',
+            'mod_ssl',
+            'mod_wsgi',
+            'openstack-aodh-common',
+            'python3-ldappool'
+        ] %}
+       {% else %}
        {% set aodh_base_packages = [
             'httpd',
             'mod_ssl',
@@ -17,6 +26,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'openstack-aodh-common',
             'python2-ldappool'
         ] %}
+       {% endif %}
 
 {{ macros.install_packages(aodh_base_packages | customizable("packages")) }}
 RUN mkdir -p /var/www/cgi-bin/aodh \

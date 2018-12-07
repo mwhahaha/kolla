@@ -8,8 +8,17 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {{ macros.configure_user(name='gnocchi') }}
 
 {% if install_type == 'binary' %}
-    {% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
-
+    {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set gnocchi_base_packages = [
+            'httpd',
+            'mod_ssl',
+            'mod_wsgi',
+            'openstack-gnocchi-common',
+            'python3-ldappool',
+            'python3-cradox'
+        ] %}
+        {% else %}
        {% set gnocchi_base_packages = [
             'httpd',
             'mod_ssl',
@@ -18,7 +27,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'python2-ldappool',
             'python2-cradox'
         ] %}
-
+        {% endif %}
 {{ macros.install_packages(gnocchi_base_packages | customizable("packages")) }}
 RUN sed -i -r 's,^(Listen 80),#\1,' /etc/httpd/conf/httpd.conf \
     && sed -i -r 's,^(Listen 443),#\1,' /etc/httpd/conf.d/ssl.conf

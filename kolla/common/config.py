@@ -19,9 +19,10 @@ from oslo_config import types
 from kolla.version import version_info as version
 
 
-BASE_OS_DISTRO = ['centos', 'rhel', 'ubuntu', 'oraclelinux', 'debian']
+BASE_OS_DISTRO = ['fedora', 'centos', 'rhel', 'ubuntu', 'oraclelinux', 'debian']
 BASE_ARCH = ['x86_64', 'ppc64le', 'aarch64']
 DEFAULT_BASE_TAGS = {
+    'fedora': '28',
     'centos': '7',
     'rhel': '7',
     'oraclelinux': '7-slim',
@@ -29,6 +30,7 @@ DEFAULT_BASE_TAGS = {
     'ubuntu': '18.04',
 }
 DISTRO_RELEASE = {
+    'fedora': '28',
     'centos': '7',
     'rhel': '7',
     'oraclelinux': '7',

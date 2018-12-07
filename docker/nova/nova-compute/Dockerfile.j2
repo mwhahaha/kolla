@@ -6,7 +6,28 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% import "macros.j2" as macros with context %}
 
 {% if install_type == 'binary' %}
-    {% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+    {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
+        {% if base_distro_tag in ['28', '8'] %}
+
+        {% set nova_compute_packages = [
+            'ceph-common',
+            'device-mapper-multipath',
+            'e2fsprogs',
+            'genisoimage',
+            'iscsi-initiator-utils',
+            'nfs-utils',
+            'nvme-cli',
+            'openstack-nova-compute',
+            'openvswitch',
+            'parted',
+            'python3-libguestfs',
+            'python3-oslo-vmware',
+            'python3-rtslib',
+            'sysfsutils',
+            'targetcli'
+        ] %}
+
+        {% else %}
 
         {% set nova_compute_packages = [
             'ceph-common',
@@ -25,6 +46,8 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'sysfsutils',
             'targetcli'
         ] %}
+
+        {% endif %}
 
 {{ macros.install_packages(nova_compute_packages | customizable("packages")) }}
 

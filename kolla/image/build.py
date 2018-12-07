@@ -683,7 +683,7 @@ class KollaWorker(object):
                              conf.rpm_setup_config if repo_file is not None])
         self.rpm_setup = self.build_rpm_setup(rpm_setup_config)
 
-        rh_base = ['centos', 'oraclelinux', 'rhel']
+        rh_base = ['fedora', 'centos', 'oraclelinux', 'rhel']
         rh_type = ['source', 'binary', 'rdo', 'rhos']
         deb_base = ['ubuntu', 'debian']
         deb_type = ['source', 'binary']

@@ -8,17 +8,37 @@ USER root
 {% import "macros.j2" as macros with context %}
 
 {% if install_type == 'binary' %}
+
+    {% if base_distro in ['fedora', 'centos', 'rhel'] %}
+        {% if base_distro_tag in ['28', '8'] %}
+
+    {% set neutron_server_opendaylight_packages = [
+        'python3-networking-odl',
+        'python3-networking-bgpvpn',
+        'python3-networking-l2gw',
+        'python3-networking-bgpvpn-heat'
+    ] %}
+
+        {% else %}
+
+    {% set neutron_server_opendaylight_packages = [
+        'python-networking-odl',
+        'python-networking-bgpvpn',
+        'python-networking-l2gw',
+        'python-networking-bgpvpn-heat'
+    ] %}
+
+        {% endif %}
+
+    {% else %}
+
     {% set neutron_server_opendaylight_packages = [
         'python-networking-odl',
         'python-networking-bgpvpn',
         'python-networking-l2gw'
     ] %}
 
-{% if base_distro in ['centos', 'rhel'] %}
-    {% set neutron_server_opendaylight_packages = neutron_server_opendaylight_packages + [
-        'python-networking-bgpvpn-heat'
-    ] %}
-{% endif %}
+    {% endif %}
 
 {{ macros.install_packages(neutron_server_opendaylight_packages | customizable("packages")) }}
 

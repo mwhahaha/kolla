@@ -8,7 +8,19 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {{ macros.configure_user(name='keystone') }}
 
 {% if install_type == 'binary' %}
-    {% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+    {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set keystone_base_packages = [
+            'httpd',
+            'mod_auth_mellon',
+            'mod_auth_openidc',
+            'mod_ssl',
+            'mod_wsgi',
+            'openstack-keystone',
+            'python3-ldappool',
+            'python.-keystoneclient'
+        ] %}
+        {% else %}
         {% set keystone_base_packages = [
             'httpd',
             'mod_auth_mellon',
@@ -19,6 +31,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'python2-ldappool',
             'python-keystoneclient'
         ] %}
+        {% endif %}
 
 {{ macros.install_packages(keystone_base_packages | customizable("packages")) }}
 RUN mkdir -p /var/www/cgi-bin/keystone \
