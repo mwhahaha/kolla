@@ -5,12 +5,21 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% import "macros.j2" as macros with context %}
 
-{% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+{% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
+    {% if base_distro_tag in ['28', '8'] %}
+    {% set iscsid_packages = [
+        'iscsi-initiator-utils',
+        'python3-rtslib',
+        'targetcli'
+    ] %}
+    {% else %}
+    
     {% set iscsid_packages = [
         'iscsi-initiator-utils',
         'python-rtslib',
         'targetcli'
     ] %}
+    {% endif %}
 
 {% elif base_distro in ['debian', 'ubuntu'] %}
     {% set iscsid_packages = [
