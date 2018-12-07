@@ -65,8 +65,10 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
       ] %}
 
   {% endif %}
+  {% if base_distro not in ['fedora'] %}
 # make sure, collectd is pulled from centos-opstools
 RUN yum-config-manager --disable epel
+  {% endif %}
 {% endif %}
 
 {{ macros.install_packages(collectd_packages | customizable("packages")) }}
