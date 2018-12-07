@@ -8,19 +8,28 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {{ macros.configure_user(name='aodh') }}
 
 {% if install_type == 'binary' %}
-    {% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
-
+    {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
        {% set aodh_base_packages = [
             'httpd',
             'mod_ssl',
             'mod_wsgi',
             'openstack-aodh-common',
+            'openstack-aodh-api'
+       ] %}
+       {# NOTE(aschultz): added api because the common package doesn't include the wsgi file. wtf? #}
+       {% if base_distro_tag in ['28', '8'] %}
+       {% set aodh_base_packages = aodh_base_packages + [
+            'python3-ldappool'
+        ] %}
+       {% else %}
+       {% set aodh_base_packages =  aodh_base_packages + [
             'python2-ldappool'
         ] %}
+       {% endif %}
 
 {{ macros.install_packages(aodh_base_packages | customizable("packages")) }}
 RUN mkdir -p /var/www/cgi-bin/aodh \
-    && cp -a /usr/lib/python2.7/site-packages/aodh/api/app.wsgi /var/www/cgi-bin/aodh/ \
+    && cp -a /usr/bin/aodh-api /var/www/cgi-bin/aodh/ \
     && sed -i -r 's,^(Listen 80),#\1,' /etc/httpd/conf/httpd.conf \
     && sed -i -r 's,^(Listen 443),#\1,' /etc/httpd/conf.d/ssl.conf
     {% elif base_distro in ['debian', 'ubuntu'] %}

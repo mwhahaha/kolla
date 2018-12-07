@@ -8,9 +8,28 @@ USER root
 {% import "macros.j2" as macros with context %}
 
 {% if install_type == 'binary' %}
+    {% if base_distro in ['fedora', 'centos', 'rhel'] %}
+        {% if base_distro_tag in ['28', '8'] %}
+
+    {% set neutron_server_ovn_packages = [
+        'python3-networking-ovn',
+    ] %}
+
+        {% else %}
+
     {% set neutron_server_ovn_packages = [
         'python-networking-ovn',
     ] %}
+
+        {% endif %}
+
+    {% else %}
+
+    {% set neutron_server_ovn_packages = [
+        'python-networking-ovn',
+    ] %}
+
+    {% endif %}
 
 {{ macros.install_packages(neutron_server_ovn_packages | customizable("packages")) }}
 

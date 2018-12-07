@@ -6,12 +6,20 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% import "macros.j2" as macros with context %}
 
 {% if install_type == 'binary' %}
-    {% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
-       {% set panko_api_packages = [
-            'openstack-panko-api',
-            'python-pymongo'
+    {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
+        {% set panko_api_packages = [
+            'openstack-panko-api'
         ] %}
 
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set panko_api_packages = panko_api_packages + [
+            'python3-pymongo'
+        ] %}
+        {% else %}
+        {% set panko_api_packages = panko_api_packages + [
+            'python-pymongo'
+        ] %}
+        {% endif %}
     {% elif base_distro in ['debian', 'ubuntu'] %}
         {% set panko_api_packages = [
             'panko-api',

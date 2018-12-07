@@ -7,13 +7,26 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% block ovs_install %}
 
-{% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+{% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
+    {% if base_distro_tag in ['28', '8'] %}
+
+    {% set openvswitch_base_packages = [
+        'openvswitch',
+        'python3-netifaces',
+        'python3-openvswitch',
+        'tcpdump'
+    ] %}
+
+    {% else %}
+
     {% set openvswitch_base_packages = [
         'openvswitch',
         'python-netifaces',
         'python-openvswitch',
         'tcpdump'
     ] %}
+
+    {% endif %}
 
 {% elif base_distro in ['debian', 'ubuntu'] %}
     {% set openvswitch_base_packages = [

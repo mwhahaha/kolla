@@ -7,7 +7,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {{ macros.configure_user(name='nova', groups='qemu') }}
 
-{% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+{% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
 
     {% set nova_libvirt_packages = [
         'ceph-common',
