@@ -9,6 +9,11 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
         # TODO(Jeffrey4l): no python-oneviewclient
         {% if base_distro_tag in ['28', '8'] %}
+{# TODO(aschultz): missing packages?
+            'openstack-ironic-staging-drivers',
+            'python3-UcsSdk',
+            'python3-ImcSdk',
+#}
         {% set ironic_conductor_packages = [
             'ansible',
             'dosfstools',
@@ -16,17 +21,14 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'gdisk',
             'ipmitool',
             'openstack-ironic-conductor',
-            'openstack-ironic-staging-drivers',
             'parted',
             'psmisc',
             'pysnmp',
-            'python3-ImcSdk',
             'python3-dracclient',
             'python3-ironic-inspector-client',
             'python3-proliantutils',
             'python3-scciclient',
             'python3-sushy',
-            'python3-UcsSdk',
             'shellinabox',
             'systemd-python',
             'util-linux',
@@ -34,6 +36,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
         ] %}
         {% else %}
         {% set ironic_conductor_packages = [
+            'wtf',
             'ansible',
             'dosfstools',
             'e2fsprogs',
