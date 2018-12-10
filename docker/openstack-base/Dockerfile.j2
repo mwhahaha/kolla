@@ -11,6 +11,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 # TODO(Allen) Remove python-dogpile-cache after the requirement of
 # python-ironicclient is fixed.
         {% if base_distro_tag in ['28', '8'] %}
+# TODO(aschultz): util-linux-user added for chsh
         {% set openstack_base_packages = [
             'avahi-libs',
             'cups-libs',
@@ -160,7 +161,8 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'python3-PyYAML',
             'systemd-sysv',
             'procps-ng',
-            'tcp_wrappers-libs'
+            'tcp_wrappers-libs',
+            'util-linux-user'
         ] %}
         {% else %}
         {% set openstack_base_packages = [
