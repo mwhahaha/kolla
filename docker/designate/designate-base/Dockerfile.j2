@@ -9,16 +9,18 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-        {% if base_distro_tag in ['28', '8'] %}
         {% set designate_base_packages = [
-            'openstack-designate-common',
-            'python-tooz',
+            'openstack-designate-common'
+        ] %}
+
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set designate_base_packages = designate_base_packages + [
+            'python3-tooz',
             'python3-oslo-reports',
             'python3-suds'
         ] %}
         {% else %}
-       {% set designate_base_packages = [
-            'openstack-designate-common',
+       {% set designate_base_packages = designate_base_packages + [
             'python-tooz',
             'python2-oslo-reports',
             'python2-suds'

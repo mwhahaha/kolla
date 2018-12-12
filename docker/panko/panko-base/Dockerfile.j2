@@ -9,20 +9,19 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-        {% if base_distro_tag in ['28', '8'] %}
-       {% set panko_base_packages = [
+        {% set panko_base_packages = [
             'httpd',
             'mod_ssl',
             'mod_wsgi',
             'openstack-panko-common',
+        ] %}
+
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set panko_base_packages = panko_base_packages + [
             'python3-ldappool'
         ] %}
         {% else %}
-       {% set panko_base_packages = [
-            'httpd',
-            'mod_ssl',
-            'mod_wsgi',
-            'openstack-panko-common',
+        {% set panko_base_packages = panko_base_packages + [
             'python2-ldappool'
         ] %}
         {% endif %}

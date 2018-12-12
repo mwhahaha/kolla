@@ -7,22 +7,19 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
+        {% set nova_spicehtml5proxy_packages = [
+            'openstack-nova-spicehtml5proxy',
+            'spice-html5'
+        ] %}
+
         {% if base_distro_tag in ['28', '8'] %}
-
-        {% set nova_spicehtml5proxy_packages = [
+        {% set nova_spicehtml5proxy_packages = nova_spicehtml5proxy_packages + [
             'python3-numpy',
-            'openstack-nova-spicehtml5proxy',
-            'spice-html5'
         ] %}
-
         {% else %}
-
-        {% set nova_spicehtml5proxy_packages = [
+        {% set nova_spicehtml5proxy_packages = nova_spicehtml5proxy_packages + [
             'numpy',
-            'openstack-nova-spicehtml5proxy',
-            'spice-html5'
         ] %}
-
         {% endif %}
 
     {% elif base_distro in ['debian', 'ubuntu'] %}

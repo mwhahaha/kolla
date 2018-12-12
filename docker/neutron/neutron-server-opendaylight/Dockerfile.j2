@@ -11,14 +11,14 @@ USER root
 
     {% if base_distro in ['fedora', 'centos', 'rhel'] %}
         {% if base_distro_tag in ['28', '8'] %}
-
-    {% set neutron_server_opendaylight_packages = [
+{# NOTE(aschultz): missing packages
         'python3-networking-odl',
         'python3-networking-bgpvpn',
-        'python3-networking-l2gw',
         'python3-networking-bgpvpn-heat'
+#}
+    {% set neutron_server_opendaylight_packages = [
+        'python3-networking-l2gw',
     ] %}
-
         {% else %}
 
     {% set neutron_server_opendaylight_packages = [

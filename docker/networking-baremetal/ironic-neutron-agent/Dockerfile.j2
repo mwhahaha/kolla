@@ -9,11 +9,9 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
         {% if base_distro_tag in ['28', '8'] %}
-{# TODO(aschultz): missing packages?
+        {% set ironic_neutron_agent_packages = [
             'python3-networking-baremetal',
             'python3-ironic-neutron-agent'
-#}
-        {% set ironic_neutron_agent_packages = [
         ] %}
         {% else %}
         {% set ironic_neutron_agent_packages = [

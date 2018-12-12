@@ -7,14 +7,16 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-       {% if base_distro_tag in ['28', '8'] %}
        {% set designate_sink_packages = [
-            'openstack-designate-sink',
+            'openstack-designate-sink'
+       ] %}
+
+       {% if base_distro_tag in ['28', '8'] %}
+       {% set designate_sink_packages = designate_sink_packages + [
             'python3-designateclient'
         ] %}
        {% else %}
-       {% set designate_sink_packages = [
-            'openstack-designate-sink',
+       {% set designate_sink_packages = designate_sink_packages + [
             'python-designateclient'
         ] %}
        {% endif %}

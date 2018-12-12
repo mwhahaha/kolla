@@ -9,21 +9,20 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-        {% if base_distro_tag in ['28', '8'] %}
         {% set cinder_base_packages = [
                 'ceph-common',
                 'lvm2',
                 'cryptsetup',
-                'openstack-cinder',
+                'openstack-cinder'
+        ] %}
+
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set cinder_base_packages = cinder_base_packages + [
                 'python3-automaton',
                 'python3-oslo-vmware'
         ] %}
         {% else %}
-        {% set cinder_base_packages = [
-                'ceph-common',
-                'lvm2',
-                'cryptsetup',
-                'openstack-cinder',
+        {% set cinder_base_packages = cinder_base_packages + [
                 'python-automaton',
                 'python-oslo-vmware'
         ] %}

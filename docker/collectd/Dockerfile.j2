@@ -12,15 +12,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 ] %}
 
 {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-  {% if base_distro_tag in ['28','8'] %}
-{# NOTE(aschultz): missing packages?
-INFO:kolla.common.utils.collectd:No match for argument: collectd-amqp1
-INFO:kolla.common.utils.collectd:No match for argument: collectd-procevent
-INFO:kolla.common.utils.collectd:No match for argument: collectd-sysevent
-INFO:kolla.common.utils.collectd:No match for argument: python-collectd-gnocchi
-#}
   {% set collectd_packages = collectd_packages + [
-      'collectd-amqp',
       'collectd-apache',
       'collectd-bind',
       'collectd-ceph',
@@ -39,57 +31,35 @@ INFO:kolla.common.utils.collectd:No match for argument: python-collectd-gnocchi
       'collectd-mysql',
       'collectd-netlink',
       'collectd-openldap',
-      'collectd-ovs_events',
-      'collectd-ovs_stats',
       'collectd-ping',
       'collectd-python',
       'collectd-sensors',
       'collectd-smart',
       'collectd-snmp',
-      'collectd-snmp_agent',
       'collectd-utils',
       'collectd-virt',
       'collectd-write_http',
       'collectd-write_kafka',
       'collectd-write_prometheus'
   ] %}
+
+  {% if base_distro_tag in ['28','8'] %}
+  {# TODO(aschultz): there are some missing packages here #}
+  {% set collectd_packages = collectd_packages + [
+      'collectd-amqp',
+      'collectd-ovs_events',
+      'collectd-ovs_stats',
+      'collectd-snmp_agent',
+  ] %}
   {% else %}
   {% set collectd_packages = collectd_packages + [
       'collectd-amqp1',
-      'collectd-apache',
-      'collectd-bind',
-      'collectd-ceph',
-      'collectd-chrony',
       'collectd-connectivity',
-      'collectd-curl',
-      'collectd-curl_json',
-      'collectd-curl_xml',
-      'collectd-dbi',
-      'collectd-disk',
-      'collectd-dns',
-      'collectd-generic-jmx',
-      'collectd-ipmi',
-      'collectd-log_logstash',
-      'collectd-mcelog',
-      'collectd-memcachec',
-      'collectd-mysql',
-      'collectd-netlink',
-      'collectd-openldap',
       'collectd-ovs-events',
       'collectd-ovs-stats',
-      'collectd-ping',
       'collectd-procevent',
-      'collectd-python',
-      'collectd-sensors',
-      'collectd-smart',
-      'collectd-snmp',
       'collectd-snmp-agent',
       'collectd-sysevent',
-      'collectd-utils',
-      'collectd-virt',
-      'collectd-write_http',
-      'collectd-write_kafka',
-      'collectd-write_prometheus',
       'python-collectd-gnocchi'
   ] %}
   {% endif %}

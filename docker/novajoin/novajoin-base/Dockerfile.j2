@@ -10,17 +10,13 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
         {% if base_distro_tag in ['28','8'] %}
-
         {% set novajoin_base_packages = [
             'python3-novajoin'
         ] %}
-
         {% else %}
-
         {% set novajoin_base_packages = [
             'python-novajoin'
         ] %}
-
         {% endif %}
 
     {% else %}

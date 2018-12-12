@@ -9,17 +9,18 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-        {% if base_distro_tag in ['28', '8'] %}
         {% set ceilometer_base_packages = [
-            'openstack-ceilometer-common',
+            'openstack-ceilometer-common'
+        ] %}
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set ceilometer_base_packages = ceilomter_base_packages + [
             'python3-panko',
             'python3-gnocchiclient',
             'python3-oslo-db',
             'python3-tooz'
          ] %}
         {% else %}
-        {% set ceilometer_base_packages = [
-            'openstack-ceilometer-common',
+        {% set ceilometer_base_packages = ceilomter_base_packages + [
             'python-panko',
             'python-gnocchiclient',
             'python-oslo-db',

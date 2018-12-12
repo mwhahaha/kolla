@@ -9,16 +9,17 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-        {% if base_distro_tag in ['28', '8'] %}
         {% set glance_base_packages = [
-            'openstack-glance',
+            'openstack-glance'
+        ] %}
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set glance_base_packages = glance_base_packages + [
             'python3-oslo-vmware',
             'python3-rados',
             'python3-rbd'
         ] %}
         {% else %}
-        {% set glance_base_packages = [
-            'openstack-glance',
+        {% set glance_base_packages = glance_base_packages + [
             'python-oslo-vmware',
             'python-rados',
             'python-rbd'

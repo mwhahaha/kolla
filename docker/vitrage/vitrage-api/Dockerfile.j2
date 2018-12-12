@@ -8,26 +8,21 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% if install_type == 'binary' %}
 
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
+        {% set vitrage_api_packages = [
+            'httpd',
+            'mod_wsgi',
+            'mod_ssl',
+            'openstack-vitrage-api'
+        ] %}
+
         {% if base_distro_tag in ['28', '8'] %}
-
-        {% set vitrage_api_packages = [
-            'httpd',
-            'mod_wsgi',
-            'mod_ssl',
-            'python3-ldappool',
-            'openstack-vitrage-api'
+        {% set vitrage_api_packages = vitrage_api_packages + [
+            'python3-ldappool'
         ] %}
-
         {% else %}
-
-        {% set vitrage_api_packages = [
-            'httpd',
-            'mod_wsgi',
-            'mod_ssl',
-            'python2-ldappool',
-            'openstack-vitrage-api'
+        {% set vitrage_api_packages = vitrage_api_packages + [
+            'python2-ldappool'
         ] %}
-
         {% endif %}
 
 {{ macros.install_packages(vitrage_api_packages | customizable("packages")) }}

@@ -7,17 +7,18 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-        {% if base_distro_tag in ['28', '8'] %}
         {% set heat_engine_packages = [
-            'python3-barbicanclient',
-            'python3-zaqarclient',
             'openstack-heat-engine'
         ] %}
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set heat_engine_packages = heat_engine_packages + [
+            'python3-barbicanclient',
+            'python3-zaqarclient'
+        ] %}
         {% else %}
-       {% set heat_engine_packages = [
+       {% set heat_engine_packages = heat_engine_packages + [
             'python-barbicanclient',
-            'python-zaqarclient',
-            'openstack-heat-engine'
+            'python-zaqarclient'
         ] %}
         {% endif %}
     {% elif base_distro in ['debian', 'ubuntu'] %}

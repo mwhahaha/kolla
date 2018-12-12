@@ -7,14 +7,15 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-        {% if base_distro_tag in ['28', '8'] %}
         {% set swift_proxy_server_packages = [
-            'openstack-swift-proxy',
+            'openstack-swift-proxy'
+        ] %}
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set swift_proxy_server_packages = swift_proxy_server_packages + [
             'python3-ceilometermiddleware'
         ] %}
         {% else %}
-        {% set swift_proxy_server_packages = [
-            'openstack-swift-proxy',
+        {% set swift_proxy_server_packages = swift_proxy_server_packages + [
             'python-ceilometermiddleware'
         ] %}
         {% endif %}

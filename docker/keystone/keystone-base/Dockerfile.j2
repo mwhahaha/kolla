@@ -9,7 +9,6 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-        {% if base_distro_tag in ['28', '8'] %}
         {% set keystone_base_packages = [
             'httpd',
             'mod_auth_mellon',
@@ -17,17 +16,15 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'mod_ssl',
             'mod_wsgi',
             'openstack-keystone',
+        ] %}
+
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set keystone_base_packages = keystone_base_packages + [
             'python3-ldappool',
             'python3-keystoneclient'
         ] %}
         {% else %}
-        {% set keystone_base_packages = [
-            'httpd',
-            'mod_auth_mellon',
-            'mod_auth_openidc',
-            'mod_ssl',
-            'mod_wsgi',
-            'openstack-keystone',
+        {% set keystone_base_packages = keystone_base_packages + [
             'python2-ldappool',
             'python-keystoneclient'
         ] %}

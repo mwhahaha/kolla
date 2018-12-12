@@ -9,21 +9,19 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-        {% if base_distro_tag in ['28', '8'] %}
         {% set gnocchi_base_packages = [
             'httpd',
             'mod_ssl',
             'mod_wsgi',
-            'openstack-gnocchi-common',
+            'openstack-gnocchi-common'
+        ] %}
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set gnocchi_base_packages = gnocchi_base_packages + [
             'python3-ldappool',
             'python3-cradox'
         ] %}
         {% else %}
-       {% set gnocchi_base_packages = [
-            'httpd',
-            'mod_ssl',
-            'mod_wsgi',
-            'openstack-gnocchi-common',
+       {% set gnocchi_base_packages = gnocchi_base_packages + [
             'python2-ldappool',
             'python2-cradox'
         ] %}

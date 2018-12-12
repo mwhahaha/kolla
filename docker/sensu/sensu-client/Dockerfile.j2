@@ -6,7 +6,6 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% import "macros.j2" as macros with context %}
 
 {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-    {% if base_distro_tag in ['28', '8'] %}
     {% set sensu_client_packages = [
         'ceph-common',
         'cyrus-sasl-devel',
@@ -16,21 +15,16 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
         'mariadb',
         'ntp',
         'osops-tools-monitoring-oschecks',
-        'python3-pymongo',
         'ruby-devel'
     ] %}
+
+    {% if base_distro_tag in ['28', '8'] %}
+    {% set sensu_client_packages = sensu_client_packages + [
+        'python3-pymongo'
+    ] %}
     {% else %}
-    {% set sensu_client_packages = [
-        'ceph-common',
-        'cyrus-sasl-devel',
-        'docker-client',
-        'gcc-c++',
-        'make',
-        'mariadb',
-        'ntp',
-        'osops-tools-monitoring-oschecks',
+    {% set sensu_client_packages = sensu_client_packages + [
         'python-pymongo',
-        'ruby-devel'
     ] %}
     {% endif %}
 {% elif base_distro in ['debian', 'ubuntu'] %}

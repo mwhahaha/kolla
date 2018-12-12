@@ -15,24 +15,20 @@ RUN echo '{{ install_type }} not yet available for {{ base_distro }}' \
 {% elif install_type == 'source' %}
 
     {% if base_distro in ['fedora', 'centos', 'oraclelinux', 'rhel'] %}
-        {% if base_distro_tag in ['28', '8'] %}
-
         {% set zun_base_packages = [
             'httpd',
             'mod_wsgi',
             'mod_ssl',
+        ] %}
+
+        {% if base_distro_tag in ['28', '8'] %}
+        {% set zun_base_packages = zun_base_packages + [
             'python3-ldappool'
         ] %}
-
         {% else %}
-
-        {% set zun_base_packages = [
-            'httpd',
-            'mod_wsgi',
-            'mod_ssl',
+        {% set zun_base_packages = zun_base_packages + [
             'python2-ldappool'
         ] %}
-
         {% endif %}
 
 {{ macros.install_packages(zun_base_packages | customizable("packages")) }}
